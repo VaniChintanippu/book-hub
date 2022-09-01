@@ -1,0 +1,43 @@
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid #e4e7eb;
+  padding: 15px 150px;
+}
+@media screen and (min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+}
+.nav-link {
+  color: #64748b;
+  margin-right: 20px;
+  list-style-type: none;
+  text-decoration: none;
+  margin-top: 0;
+}
+.nav-menu {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .nav-menu {
+    display: flex;
+  }
+}
+.logout-button {
+  background: #0284c7;
+  border-radius: 12px;
+  height: 40px;
+  padding: 12px 24px;
+  border: 0;
+  color: white;
+  margin-top: 10px;
+}
+.nav-list {
+  display: flex;
+  flex-direction: row;
+}
+.logo {
+  margin-top: 10px;
+}

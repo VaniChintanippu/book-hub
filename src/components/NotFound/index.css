@@ -1,0 +1,23 @@
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+.not-found-heading {
+  color: #334155;
+  text-align: center;
+}
+.not-found-description {
+  color: #475569;
+  text-align: center;
+}
+.redirect-button {
+  background: #0284c7;
+  border-radius: 12px;
+  flex-grow: 0;
+  padding: 12px 24px;
+  border: 0;
+  color: white;
+}
