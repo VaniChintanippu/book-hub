@@ -1,0 +1,15 @@
+.mobile-viewing {
+  display: flex;
+  flex-direction: column;
+}
+.book-title {
+  color: #334155;
+  text-align: center;
+}
+.author-name {
+  color: #64748b;
+  text-align: center;
+}
+.cover-pic {
+  width: 40px;
+}
