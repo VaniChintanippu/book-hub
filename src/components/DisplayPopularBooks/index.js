@@ -1,8 +1,8 @@
 import './index.css'
 
 const DisplayPopularBooks = props => {
-  const {bookData} = props
-  const {authorName, coverPic, title} = bookData
+  const {bookDetails} = props
+  const {authorName, coverPic, title} = bookDetails
 
   return (
     <div className="mobile-viewing">

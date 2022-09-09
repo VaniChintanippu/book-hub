@@ -1,0 +1,23 @@
+.bookshelf-bg-container {
+  background: #f5f7fa;
+  height: 100vh;
+}
+.bookshelf-bottom-container {
+  margin: 40px 80px;
+  display: flex;
+}
+.bookshelves-list-container {
+  background-color: white;
+  width: 300px;
+  padding: 20px;
+  height: 87vh;
+}
+.shelf-heading {
+  color: #334155;
+  font-size: 15px;
+  font-weight: 600;
+}
+.shelves-list-container {
+  display: flex;
+  flex-direction: column;
+}

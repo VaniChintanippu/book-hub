@@ -3,6 +3,7 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 import Header from '../Header'
 import Footer from '../Footer'
+import BookshelvesList from '../BookshelvesList'
 import './index.css'
 
 const bookshelvesList = [
@@ -30,7 +31,14 @@ const bookshelvesList = [
 
 class Bookshelves extends Component {
   state = {
-    selection: true,
+    bookshelvesLabel: 'All',
+  }
+
+  changeShelfLabel = id => {
+    const onClickLabelData = bookshelvesList.filter(book => book.id === id)
+    this.setState({
+      bookshelvesLabel: onClickLabelData.label,
+    })
   }
 
   render() {
@@ -39,13 +47,23 @@ class Bookshelves extends Component {
       return <Redirect to="/login" />
     }
     return (
-      <>
+      <div className="bookshelf-bg-container">
         <Header />
-        <div>
-          <h1>Bookshelves</h1>
+        <div className="bookshelf-bottom-container">
+          <div className="bookshelves-list-container">
+            <h1 className="shelf-heading">Bookshelves</h1>
+            <div className="shelves-list-container">
+              {bookshelvesList.map(bookshelves => (
+                <BookshelvesList
+                  key={bookshelves.id}
+                  bookshelvesDetails={bookshelves}
+                  changeShelfLabel={this.changeShelfLabel}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-        <Footer />
-      </>
+      </div>
     )
   }
 }

@@ -37,7 +37,7 @@ const Header = props => {
           </Link>
         </ul>
         <button className="logout-button" type="button" onClick={onClickLogout}>
-          Log Out
+          Logout
         </button>
       </div>
     </nav>

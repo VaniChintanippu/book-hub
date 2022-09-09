@@ -38,8 +38,8 @@ const Home = () => {
           </div>
           <RenderPopularBooks />
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   )
 }

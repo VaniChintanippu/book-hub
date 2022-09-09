@@ -15,22 +15,15 @@ const apiStatusConstants = {
   failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
 }
-const mobileSettings = {
-  dots: false,
-  slidesToShow: 2,
-  slidesToScroll: 1,
-}
 
-const deskSettings = {
-  dots: false,
-  slidesToShow: 3,
-  slidesToScroll: 1,
+const sliderShow = {
+  slidesToShow: 4,
 }
 
 class RenderPopularBooks extends Component {
   state = {
-    popularBooks: [],
     apiStatus: apiStatusConstants.initial,
+    bookData: [],
   }
 
   componentDidMount() {
@@ -47,21 +40,18 @@ class RenderPopularBooks extends Component {
       },
       method: 'GET',
     }
-
     const response = await fetch(apiUrl, options)
     if (response.ok === true) {
       const fetchedData = await response.json()
-
-      const updatedData = fetchedData.books.map(book => ({
-        id: book.id,
-        authorName: book.author_name,
-        coverPic: book.cover_pic,
-        title: book.title,
+      const updatedData = fetchedData.books.map(eachBook => ({
+        id: eachBook.id,
+        authorName: eachBook.author_name,
+        coverPic: eachBook.cover_pic,
+        title: eachBook.title,
       }))
-
       this.setState({
         apiStatus: apiStatusConstants.success,
-        popularBooks: updatedData,
+        bookData: updatedData,
       })
     }
     if (response.status === 401) {
@@ -72,61 +62,47 @@ class RenderPopularBooks extends Component {
   }
 
   renderLoadingView = () => (
-    <div className="products-loader-container">
-      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    <div className="products-loader-container" testid="loader">
+      <Loader type="Rings" color="#0b69ff" height="50" width="50" />
     </div>
   )
 
-  renderPopularBooksFailureView = () => (
+  renderSuccessView = () => {
+    const {bookData} = this.state
+
+    return (
+      <Slider {...sliderShow}>
+        {bookData.map(book => (
+          <DisplayPopularBooks key={book.id} bookDetails={book} />
+        ))}
+      </Slider>
+    )
+  }
+
+  renderFailureView = () => (
     <div className="failure-container">
       <img
         src="https://res.cloudinary.com/dyrfx9ekj/image/upload/v1661942080/Group_7522_gdsj57.png"
         alt="failure view"
-        className="failure-image"
       />
-      <p className="failure-descripton">
-        Something went wrong. Please try Again.
-      </p>
+      <p className="failure-para">Something went wrong. Please try again</p>
       <Link to="/">
-        <button type="button" className="button">
+        <button type="button" className="try-again-button">
           Try Again
         </button>
       </Link>
     </div>
   )
 
-  renderPopularBooksSuccessView = () => {
-    const {popularBooks} = this.state
-
-    return (
-      <>
-        <div className="mobile-view" testid="mobile">
-          <Slider>
-            {popularBooks.map(eachBook => (
-              <DisplayPopularBooks bookData={eachBook} key={eachBook.id} />
-            ))}
-          </Slider>
-        </div>
-        <div className="desk-view" testid="desk">
-          <Slider>
-            {popularBooks.map(eachBook => (
-              <DisplayPopularBooks bookData={eachBook} key={eachBook.id} />
-            ))}
-          </Slider>
-        </div>
-      </>
-    )
-  }
-
   render() {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.renderPopularBooksSuccessView()
-      case apiStatusConstants.failure:
-        return this.renderPopularBooksFailureView()
+        return this.renderSuccessView()
       case apiStatusConstants.inProgress:
         return this.renderLoadingView()
+      case apiStatusConstants.failure:
+        return this.renderFailureView()
       default:
         return null
     }
