@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom'
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Slider from 'react-slick'
@@ -22,7 +23,7 @@ const mobileSettings = {
 
 const deskSettings = {
   dots: false,
-  slidesToShow: 4,
+  slidesToShow: 3,
   slidesToScroll: 1,
 }
 
@@ -46,6 +47,7 @@ class RenderPopularBooks extends Component {
       },
       method: 'GET',
     }
+
     const response = await fetch(apiUrl, options)
     if (response.ok === true) {
       const fetchedData = await response.json()
@@ -85,9 +87,11 @@ class RenderPopularBooks extends Component {
       <p className="failure-descripton">
         Something went wrong. Please try Again.
       </p>
-      <button type="button" className="button">
-        Try Again
-      </button>
+      <Link to="/">
+        <button type="button" className="button">
+          Try Again
+        </button>
+      </Link>
     </div>
   )
 
@@ -96,22 +100,18 @@ class RenderPopularBooks extends Component {
 
     return (
       <>
-        <div className="mobile-view">
-          <Slider {...mobileSettings}>
-            <div>
-              {popularBooks.map(eachBook => (
-                <DisplayPopularBooks bookData={eachBook} key={eachBook.id} />
-              ))}
-            </div>
+        <div className="mobile-view" testid="mobile">
+          <Slider>
+            {popularBooks.map(eachBook => (
+              <DisplayPopularBooks bookData={eachBook} key={eachBook.id} />
+            ))}
           </Slider>
         </div>
-        <div className="desk-view">
-          <Slider {...deskSettings}>
-            <div>
-              {popularBooks.map(eachBook => (
-                <DisplayPopularBooks bookData={eachBook} key={eachBook.id} />
-              ))}
-            </div>
+        <div className="desk-view" testid="desk">
+          <Slider>
+            {popularBooks.map(eachBook => (
+              <DisplayPopularBooks bookData={eachBook} key={eachBook.id} />
+            ))}
           </Slider>
         </div>
       </>

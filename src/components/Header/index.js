@@ -32,7 +32,7 @@ const Header = props => {
           <Link to="/" className="nav-link">
             <li>Home</li>
           </Link>
-          <Link to="/book-hub/books" className="nav-link">
+          <Link to="/shelf" className="nav-link">
             <li>Bookshelves</li>
           </Link>
         </ul>
