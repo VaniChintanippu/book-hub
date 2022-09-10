@@ -1,40 +1,28 @@
-import {Component} from 'react'
-import Cookies from 'js-cookie'
+import {Link} from 'react-router-dom'
+import {BsFillStarFill} from 'react-icons/bs'
 import './index.css'
 
-const apiStatusConstants = {
-  initial: 'INITIAL',
-  success: 'SUCCESS',
-  failure: 'FAILURE',
-  inProgress: 'IN_PROGRESS',
-}
+const RenderBookshelfResults = props => {
+  const {bookshelfData} = props
+  const {id, rating, authorName, coverPic, title, readStatus} = bookshelfData
 
-class RenderBookshelfResults extends Component {
-  state: {
-    apiStatus: apiStatusConstants.initial,
-    bookshelfData: [],
-  }
-
-  componentDidMount() {
-    this.getBookshelfData()
-  }
-
-  getBookshelfData = async () => {
-    this.setState({apiStatus: apiStatusConstants.inProgress})
-    const jwtToken = Cookies.get('jwt_token')
-    const apiUrl = 'https://apis.ccbp.in/book-hub/top-rated-books'
-    const options = {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-      method: 'GET',
-    }
-    const response = await fetch(apiUrl, options)
-  }
-
-  render() {
-    return <h1> SDg</h1>
-  }
+  return (
+    <Link to="/books/:id">
+      <div className="book-result">
+        <img src={coverPic} alt={title} />
+        <div className="result-values-container">
+          <p className="title">{title}</p>
+          <p className="author">{authorName}</p>
+          <div className="rating-container">
+            <p className="author">Avg Rating</p>
+            <BsFillStarFill />
+            <p className="author">{rating}</p>
+          </div>
+          <p className="author">Status: {readStatus}</p>
+        </div>
+      </div>
+    </Link>
+  )
 }
 
 export default RenderBookshelfResults

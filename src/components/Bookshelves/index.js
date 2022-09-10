@@ -1,11 +1,13 @@
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import {Component} from 'react'
+import Loader from 'react-loader-spinner'
 import {BsSearch} from 'react-icons/bs'
 import Cookies from 'js-cookie'
 import Header from '../Header'
 import Footer from '../Footer'
 import BookshelvesList from '../BookshelvesList'
 import RenderBookshelfResults from '../RenderBookshelfResults'
+
 import './index.css'
 
 const bookshelvesList = [
@@ -31,20 +33,116 @@ const bookshelvesList = [
   },
 ]
 
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+  inProgress: 'IN_PROGRESS',
+}
+
 class Bookshelves extends Component {
   state = {
     bookshelvesLabel: 'All',
     searchInput: '',
+    apiStatus: apiStatusConstants.initial,
+    bookshelfData: [],
+  }
+
+  componentDidMount() {
+    this.getBookshelfData()
+  }
+
+  getBookshelfData = async () => {
+    const {bookshelvesLabel, searchInput} = this.state
+
+    this.setState({apiStatus: apiStatusConstants.inProgress})
+    const jwtToken = Cookies.get('jwt_token')
+    const apiUrl = `https://apis.ccbp.in/book-hub/books?shelf=${bookshelvesLabel}&search=${searchInput}`
+    const options = {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: 'GET',
+    }
+    const response = await fetch(apiUrl, options)
+    if (response.ok === true) {
+      const fetchedData = await response.json()
+
+      const updatedData = fetchedData.books.map(eachBook => ({
+        id: eachBook.id,
+        authorName: eachBook.author_name,
+        coverPic: eachBook.cover_pic,
+        title: eachBook.title,
+        readStatus: eachBook.read_status,
+        rating: eachBook.rating,
+      }))
+      this.setState({
+        apiStatus: apiStatusConstants.success,
+        bookshelfData: updatedData,
+      })
+    }
+    if (response.status === 401) {
+      this.setState({
+        apiStatus: apiStatusConstants.failure,
+      })
+    }
+  }
+
+  renderLoadingView = () => (
+    <div className="products-loader-container" testid="loader">
+      <Loader type="Rings" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  renderFailureView = () => (
+    <div className="failure-container">
+      <img
+        src="https://res.cloudinary.com/dyrfx9ekj/image/upload/v1661942080/Group_7522_gdsj57.png"
+        alt="failure view"
+      />
+      <p className="failure-para">Something went wrong. Please try again</p>
+      <Link to="/shelf">
+        <button type="button" className="try-again-button">
+          Try Again
+        </button>
+      </Link>
+    </div>
+  )
+
+  renderSuccessView = () => {
+    const {bookshelfData} = this.state
+    return (
+      <div className="results-container">
+        {bookshelfData.map(book => (
+          <RenderBookshelfResults bookshelfData={book} key={book.id} />
+        ))}
+      </div>
+    )
+  }
+
+  renderView = () => {
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case apiStatusConstants.inProgress:
+        return this.renderLoadingView()
+      case apiStatusConstants.success:
+        return this.renderSuccessView()
+      case apiStatusConstants.failure:
+        return this.renderFailureView()
+      default:
+        return null
+    }
   }
 
   changeShelfLabel = id => {
-    const onClickLabelData = bookshelvesList.filter(book => book.id === id)
-    this.setState({
-      bookshelvesLabel: onClickLabelData.label,
-    })
+    bookshelvesList.map(book =>
+      book.id === id
+        ? this.setState({
+            bookshelvesLabel: book.label,
+          })
+        : null,
+    )
   }
-
-  onClickSearch = () => {}
 
   onChangeSearchInput = event => {
     this.setState({
@@ -84,19 +182,12 @@ class Bookshelves extends Component {
                   onChange={this.onChangeSearchInput}
                   value={searchInput}
                 />
-                <button
-                  type="button"
-                  testid="searchButton"
-                  onClick={this.onClickSearch}
-                >
+                <button type="button" testid="searchButton">
                   <BsSearch />
                 </button>
               </div>
             </div>
-            <RenderBookshelfResults
-              label={bookshelvesLabel}
-              searchValue={searchInput}
-            />
+            <div>{this.renderView()}</div>
             <Footer />
           </div>
         </div>

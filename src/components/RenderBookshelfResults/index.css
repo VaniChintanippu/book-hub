@@ -1,0 +1,10 @@
+.book-result {
+  width: 50%;
+}
+.result-values-container {
+  display: flex;
+  flex-direction: column;
+}
+.rating-container {
+  display: flex;
+}

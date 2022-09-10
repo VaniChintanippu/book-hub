@@ -1,0 +1,27 @@
+.book-bg-details-container {
+  background: #f5f7fa;
+  height: 100vh;
+}
+.failure-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.failure-para {
+  color: #475569;
+}
+.try-again-button {
+  background: #0284c7;
+  border-radius: 12px;
+  height: 40px;
+  padding: 12px 24px;
+  border: 0;
+  color: white;
+  margin-top: 10px;
+}
+.results-container {
+  background-color: white;
+  border-radius: 16px;
+  padding: 40px;
+  margin: 50px;
+}

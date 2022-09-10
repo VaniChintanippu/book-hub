@@ -40,3 +40,24 @@
 .search-input {
   border: 0;
 }
+.failure-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.failure-para {
+  color: #475569;
+}
+.try-again-button {
+  background: #0284c7;
+  border-radius: 12px;
+  height: 40px;
+  padding: 12px 24px;
+  border: 0;
+  color: white;
+  margin-top: 10px;
+}
+.results-container {
+  display: flex;
+  flex-wrap: wrap;
+}
