@@ -1,9 +1,11 @@
-import {Redirect, Link} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import {Component} from 'react'
+import {BsSearch} from 'react-icons/bs'
 import Cookies from 'js-cookie'
 import Header from '../Header'
 import Footer from '../Footer'
 import BookshelvesList from '../BookshelvesList'
+import RenderBookshelfResults from '../RenderBookshelfResults'
 import './index.css'
 
 const bookshelvesList = [
@@ -32,6 +34,7 @@ const bookshelvesList = [
 class Bookshelves extends Component {
   state = {
     bookshelvesLabel: 'All',
+    searchInput: '',
   }
 
   changeShelfLabel = id => {
@@ -41,7 +44,16 @@ class Bookshelves extends Component {
     })
   }
 
+  onClickSearch = () => {}
+
+  onChangeSearchInput = event => {
+    this.setState({
+      searchInput: event.target.value,
+    })
+  }
+
   render() {
+    const {bookshelvesLabel, searchInput} = this.state
     const jwtToken = Cookies.get('jwt_token')
     if (jwtToken === undefined) {
       return <Redirect to="/login" />
@@ -61,6 +73,31 @@ class Bookshelves extends Component {
                 />
               ))}
             </div>
+          </div>
+          <div className="bookshelf-results-container">
+            <div className="shelf-heading-search-container">
+              <h1 className="results-heading">{bookshelvesLabel} Books</h1>
+              <div className="search-container">
+                <input
+                  type="search"
+                  className="search-input"
+                  onChange={this.onChangeSearchInput}
+                  value={searchInput}
+                />
+                <button
+                  type="button"
+                  testid="searchButton"
+                  onClick={this.onClickSearch}
+                >
+                  <BsSearch />
+                </button>
+              </div>
+            </div>
+            <RenderBookshelfResults
+              label={bookshelvesLabel}
+              searchValue={searchInput}
+            />
+            <Footer />
           </div>
         </div>
       </div>

@@ -21,3 +21,22 @@
   display: flex;
   flex-direction: column;
 }
+.bookshelf-results-container {
+  margin-left: 20px;
+  width: 100%;
+}
+.shelf-heading-search-container {
+  display: flex;
+}
+.results-heading {
+  color: #334155;
+  font-size: 20px;
+  font-weight: 600;
+}
+.search-container {
+  border: 1px #cbd5e1 solid;
+  align-self: flex-end;
+}
+.search-input {
+  border: 0;
+}
