@@ -43,6 +43,7 @@ const apiStatusConstants = {
 class Bookshelves extends Component {
   state = {
     bookshelvesLabel: 'All',
+    bookshelvesValue: 'ALL',
     searchInput: '',
     apiStatus: apiStatusConstants.initial,
     bookshelfData: [],
@@ -53,11 +54,12 @@ class Bookshelves extends Component {
   }
 
   getBookshelfData = async () => {
-    const {bookshelvesLabel, searchInput} = this.state
+    const {bookshelvesValue, searchInput} = this.state
 
     this.setState({apiStatus: apiStatusConstants.inProgress})
     const jwtToken = Cookies.get('jwt_token')
-    const apiUrl = `https://apis.ccbp.in/book-hub/books?shelf=${bookshelvesLabel}&search=${searchInput}`
+
+    const apiUrl = `https://apis.ccbp.in/book-hub/books?shelf=${bookshelvesValue}&search=${searchInput}`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -65,6 +67,7 @@ class Bookshelves extends Component {
       method: 'GET',
     }
     const response = await fetch(apiUrl, options)
+    console.log(response)
     if (response.ok === true) {
       const fetchedData = await response.json()
 
@@ -76,6 +79,7 @@ class Bookshelves extends Component {
         readStatus: eachBook.read_status,
         rating: eachBook.rating,
       }))
+      console.log(updatedData)
       this.setState({
         apiStatus: apiStatusConstants.success,
         bookshelfData: updatedData,
@@ -139,9 +143,11 @@ class Bookshelves extends Component {
       book.id === id
         ? this.setState({
             bookshelvesLabel: book.label,
+            bookshelvesValue: book.value,
           })
         : null,
     )
+    this.getBookshelfData()
   }
 
   onChangeSearchInput = event => {

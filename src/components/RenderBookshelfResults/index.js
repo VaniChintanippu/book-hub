@@ -4,7 +4,7 @@ import './index.css'
 
 const RenderBookshelfResults = props => {
   const {bookshelfData} = props
-  const {id, rating, authorName, coverPic, title, readStatus} = bookshelfData
+  const {rating, authorName, coverPic, title, readStatus} = bookshelfData
 
   return (
     <Link to="/books/:id">
