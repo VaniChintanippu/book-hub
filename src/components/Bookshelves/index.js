@@ -67,7 +67,7 @@ class Bookshelves extends Component {
       method: 'GET',
     }
     const response = await fetch(apiUrl, options)
-    console.log(response)
+
     if (response.ok === true) {
       const fetchedData = await response.json()
 
@@ -79,7 +79,7 @@ class Bookshelves extends Component {
         readStatus: eachBook.read_status,
         rating: eachBook.rating,
       }))
-      console.log(updatedData)
+
       this.setState({
         apiStatus: apiStatusConstants.success,
         bookshelfData: updatedData,
@@ -194,8 +194,8 @@ class Bookshelves extends Component {
               </div>
             </div>
             <div>{this.renderView()}</div>
-            <Footer />
           </div>
+          <Footer />
         </div>
       </div>
     )

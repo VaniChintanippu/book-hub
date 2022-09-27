@@ -41,7 +41,7 @@ class RenderPopularBooks extends Component {
       method: 'GET',
     }
     const response = await fetch(apiUrl, options)
-    console.log(response)
+    //console.log(response)
     if (response.ok === true) {
       const fetchedData = await response.json()
       const updatedData = fetchedData.books.map(eachBook => ({
@@ -80,6 +80,10 @@ class RenderPopularBooks extends Component {
     )
   }
 
+  onClickTryAgain = () => {
+    this.getPopularBooks()
+  }
+
   renderFailureView = () => (
     <div className="failure-container">
       <img
@@ -87,11 +91,14 @@ class RenderPopularBooks extends Component {
         alt="failure view"
       />
       <p className="failure-para">Something went wrong. Please try again</p>
-      <Link to="/">
-        <button type="button" className="try-again-button">
-          Try Again
-        </button>
-      </Link>
+
+      <button
+        type="button"
+        className="try-again-button"
+        onClick={this.onClickTryAgain}
+      >
+        Try Again
+      </button>
     </div>
   )
 

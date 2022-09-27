@@ -4,10 +4,10 @@ import './index.css'
 
 const RenderBookshelfResults = props => {
   const {bookshelfData} = props
-  const {rating, authorName, coverPic, title, readStatus} = bookshelfData
+  const {id, rating, authorName, coverPic, title, readStatus} = bookshelfData
 
   return (
-    <Link to="/books/:id">
+    <Link to={`/books/${id}`}>
       <div className="book-result">
         <img src={coverPic} alt={title} />
         <div className="result-values-container">

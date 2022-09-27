@@ -26,6 +26,7 @@ class BookDetails extends Component {
 
   getBookDetailsData = async () => {
     const {match} = this.props
+    console.log(match)
     const {params} = match
     const {id} = params
     this.setState({apiStatus: apiStatusConstants.inProgress})
@@ -40,16 +41,16 @@ class BookDetails extends Component {
     const response = await fetch(apiUrl, options)
     if (response.ok === true) {
       const fetchedData = await response.json()
-      const updatedData = fetchedData.book_details.map(eachBook => ({
-        id: eachBook.id,
-        authorName: eachBook.author_name,
-        coverPic: eachBook.cover_pic,
-        title: eachBook.title,
-        readStatus: eachBook.read_status,
-        rating: eachBook.rating,
-        aboutBook: eachBook.about_book,
-        aboutAuthor: eachBook.about_author,
-      }))
+      const updatedData = {
+        id: fetchedData.book_details.id,
+        authorName: fetchedData.book_details.author_name,
+        coverPic: fetchedData.book_details.cover_pic,
+        title: fetchedData.book_details.title,
+        readStatus: fetchedData.book_details.read_status,
+        rating: fetchedData.book_details.rating,
+        aboutBook: fetchedData.book_details.about_book,
+        aboutAuthor: fetchedData.book_details.about_author,
+      }
       this.setState({
         apiStatus: apiStatusConstants.success,
         bookDetails: updatedData,
@@ -68,6 +69,10 @@ class BookDetails extends Component {
     </div>
   )
 
+  onClickTryAgain = () => {
+    this.getBookDetailsData()
+  }
+
   renderFailureView = () => (
     <div className="failure-container">
       <img
@@ -75,11 +80,14 @@ class BookDetails extends Component {
         alt="failure view"
       />
       <p className="failure-para">Something went wrong. Please try again</p>
-      <Link to="/books/:id">
-        <button type="button" className="try-again-button">
-          Try Again
-        </button>
-      </Link>
+
+      <button
+        type="button"
+        className="try-again-button"
+        onClick={this.onClickTryAgain}
+      >
+        Try Again
+      </button>
     </div>
   )
 
@@ -87,9 +95,7 @@ class BookDetails extends Component {
     const {bookDetails} = this.state
     return (
       <div className="results-container">
-        {bookDetails.map(book => (
-          <RenderBookDetails bookDetails={book} key={book.id} />
-        ))}
+        <RenderBookDetails bookDetails={bookDetails} key={bookDetails.id} />
       </div>
     )
   }

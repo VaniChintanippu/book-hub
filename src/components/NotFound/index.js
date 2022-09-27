@@ -13,7 +13,11 @@ const NotFound = () => (
       the homepage.
     </p>
     <Link to="/">
-      <button className="redirect-button" type="button">
+      <button
+        className="redirect-button"
+        type="button"
+        testid="Go Back to Home"
+      >
         Go Back to Home
       </button>
     </Link>
